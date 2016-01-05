@@ -10,18 +10,47 @@ var Q = require('q');
 var d = function(vari) { console.log(require('util').inspect(vari, {colors: true, depth: 7})); };
 var dd = function(vari) { console.log(require('util').inspect(vari, {colors: true, depth: 7})); process.exit(); };
 
-//downloadData(function() {
-    aggregate();
-//});
+downloadData(function() {
+    aggregate(convertForumData());
+});
 
 
 // ----
 
+function convertForumData() {
 
-function aggregate() {
+    var lines = fs.readFileSync(__dirname + "/data/raresfromforum.csv").toString().split("\n");
+
+    var keys = lines[0].split(",");
+
+    var list = [];
+    _.each(lines, function(line, i) {
+
+        if(i !== 0) {
+
+            line = line.split(",");
+
+            if(line.length > 1) {
+
+                var obj = {};
+                _.each(keys, function (key, col) {
+
+                    obj[key] = line[col].replace(/"/g, "");
+
+                });
+                list.push(obj);
+
+            }
+        }
+    })
+
+    return list;
+}
+
+function aggregate(rares) {
 
 
-    var rares = JSON.parse(fs.readFileSync(__dirname + "/data/rares.json")); // self written (and corrected) from elite-wiki
+    //var rares = JSON.parse(fs.readFileSync(__dirname + "/data/rares.json")); // self written (and corrected) from elite-wiki
     var stations = JSON.parse(fs.readFileSync(__dirname + "/data/stations.json")); // eddb
     var systems = JSON.parse(fs.readFileSync(__dirname + "/data/systems.json")); // eddb
 
@@ -60,7 +89,16 @@ function aggregate() {
         }
 
         system.rares.push({
-            name: rare.rare,
+            name: rare.item,
+            category: rare.category,
+            price: parseInt(rare.price),
+            max_cap: rare.max_cap,
+            suppressed: (rare.suppressed === "t"),
+            sc_est_mins: parseInt(rare.sc_est_mins),
+            often_illegal: (rare.often_illegal === "t"),
+            est_sell150: parseFloat(rare.est_sell150),
+            est_unit_profit150: parseFloat(rare.est_unit_profit150),
+            est_total_profit150: parseFloat(rare.est_total_profit150),
             station: stationdata
         });
 

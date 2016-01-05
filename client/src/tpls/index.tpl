@@ -76,17 +76,17 @@
             <p>The sourcecode is freely available on github (MIT-License): <a href="https://github.com/fjw/starmap">fjw/starmap</a>.</p>
 
             <h2>Data</h2>
-            <p>The list of rares comes from the Elite Dangerous Wiki <a href="http://elite-dangerous.wikia.com/wiki/List_of_Rare_Commodities">rares list</a> with a lot of manual corrections and research by myself.</p>
+            <p>The list of rares comes from the Elite Dangerous Forum <a href="https://forums.frontier.co.uk/showthread.php?t=63119&page=171">rares list</a>. Thanks to Zoy and all others for this.</p>
             <p>All additional Information about the Stations and Systems comes from <a href="https://eddb.io/api">EDDB API</a>. Thanks!</p>
             <p>The last data-import was: {{datatime}}</p>
 
             <h2>About me</h2>
             <p>In Elite Dangerous I am CMDR Pertel.</p>
-            <p>In real life I am a eCommerce-Developer living in beautiful Munich / Germany. You can find out more about me and my projects on my <a href="https://github.com/fjw?tab=repositories">github</a> and my <a href="https://www.xing.com/profile/Frederic_Worm">xing</a> profile.</p>
+            <p>In real life I am a eCommerce developer living in beautiful Munich / Germany. You can find out more about me and my projects on <a href="https://github.com/fjw?tab=repositories">github</a> and my <a href="https://www.xing.com/profile/Frederic_Worm">xing</a> profile.</p>
             <p>If you would like to support my stuff, a warm <a href="#" class="coffeelink">coffee</a> is always helpful. :)</p>
 
             <h2>Contact</h2>
-            <p>If you got problems or have suggetions you can write me: fjw@garx.de</p>
+            <p>If you got problems or have suggestions you can write me: fjw@garx.de</p>
 
         </div>
 
