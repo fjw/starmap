@@ -6,7 +6,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>starmap</title>
+    <title>eliterares - Elite Dangerous 3D map for rares trading</title>
 
     <style>
         @font-face {
