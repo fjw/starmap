@@ -1,0 +1,5 @@
+.idea
+node_modules
+data/stations.json
+data/systems.json
+liveserver
