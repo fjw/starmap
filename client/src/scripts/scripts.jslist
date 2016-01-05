@@ -1,0 +1,13 @@
+
+# --- Libraries ---
+lib/lodash.js
+lib/jquery.js
+lib/jquery-ui.js
+jquery-ui.catcomplete.js
+lib/three.js
+
+lib/stats.js
+
+# -----------------
+orbit.js
+starmap.js

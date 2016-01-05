@@ -1,0 +1,557 @@
+/*!
+ *  ----------------------------------------------------------------------------------------
+ *           _
+ *       ___| |_ __ _ _ __ _ __ ___   __ _ _ __
+ *      / __| __/ _` | '__| '_ ` _ \ / _` | '_ \
+ *      \__ \ || (_| | |  | | | | | | (_| | |_) |
+ *      |___/\__\__,_|_|  |_| |_| |_|\__,_| .__/
+ *                                        |_|
+ *        2016 - Frédéric Worm
+ *  ----------------------------------------------------------------------------------------
+ */
+
+@import "normalize.less";
+
+@import "jquery-ui.less";
+@import "jquery-ui.theme.less";
+
+
+/* --- */
+
+  @bg: black;
+
+  @text-1: #fff;
+  @text-2: #cc7830;
+  @text-3: #bc3f3c;
+  @text-4: #ffc66d;
+  @text-5: #888;
+  @text-6: #fea;
+
+
+  @box-border-1: #333;
+
+  @box-border-2: #333;
+  @box-bg-2: #222;
+
+/* --- */
+
+  //noinspection CssUnknownTarget
+  @inactivetab_bg: #333 url("images/ui-bg_highlight-soft_20_333_1x100.png") 50% 50% repeat-x;
+  @inactivetab_color: #ccc;
+  @inactivetab_border: #444;
+
+  @activetab_bg: #000;
+  @activetab_color: #fff;
+  @activetab_border: #444;
+
+  @hovertab_color: @text-2;
+  @hovertab_border: @text-2;
+
+/* --- */
+
+  @header_height: 40px;
+  @footer_height: 0px;
+  @sidebar_width: 350px;
+
+  @boxmargin: 5px;
+
+  @filterheight: 31px;
+
+/* --- */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Michroma, Arial, sans-serif;
+  font-size: 13px;
+
+  color: @text-1;
+  background: @bg;
+}
+
+.nn {
+  display: none;
+}
+
+/* ------------------------------- */
+
+main, header, footer, #maparea {
+  position: absolute;
+  overflow: hidden;
+}
+
+header {
+  height: @header_height;
+  left: 0; right: 0; top: 0;
+}
+
+main {
+  width: @sidebar_width;
+  left: 0; top: @header_height; bottom: @footer_height;
+  overflow: auto;
+}
+
+#maparea {
+  left: @sidebar_width; right: 0; top: @header_height; bottom: @footer_height;
+}
+
+footer {
+  height: @footer_height;
+  left: 0; right: 0; bottom: 0;
+}
+
+/* ------------------------------- */
+
+main>div {
+  border: 1px solid @box-border-1;
+  border-radius: 1px;
+
+  margin: @boxmargin;
+  padding: 10px;
+}
+
+#maparea {
+
+  #filters {
+    height: @filterheight;
+    margin: @boxmargin;
+
+    .filter {
+
+      position: relative;
+      float: left;
+      margin-right: @boxmargin;
+
+      .label {
+        float: left;
+
+        color: @text-5;
+        padding: 5px;
+      }
+
+      input {
+        border: 1px solid @box-border-2;
+        background: #333;
+        color: #fff;
+
+        border-radius: 2px;
+        padding: 5px 5px 4px 5px;
+      }
+
+      #color {
+        width: 320px;
+      }
+
+    }
+
+  }
+
+  #map {
+    position: absolute;
+
+    border: 1px solid @box-border-1;
+    border-radius: 1px;
+
+    top: @boxmargin + @filterheight + @boxmargin;
+    bottom: @boxmargin;
+    left: @boxmargin;
+    right: @boxmargin;
+
+    overflow: hidden;
+
+    canvas {
+      cursor: crosshair;
+    }
+
+    #stats {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+  }
+
+}
+
+nav {
+  margin: @boxmargin;
+  height: @filterheight;
+
+
+  display: flex;
+  justify-content: space-between;
+
+  &>a {
+
+    flex: 1;
+
+    margin: 0 @boxmargin/2;
+
+    border: 1px solid @inactivetab_border;
+    border-radius: 2px;
+
+    line-height: 28px;
+
+    text-align: center;
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    background: @inactivetab_bg;
+    color: @inactivetab_color;
+
+    &:hover {
+      color: @hovertab_color;
+      border-color: @hovertab_border;
+
+      cursor: pointer;
+    }
+
+    &.active {
+      background: @activetab_bg;
+      color: @activetab_color;
+      border-color: @activetab_border;
+    }
+
+    .route_count {
+      font-size: 11px;
+
+      color: @text-4;
+
+      &.route_count_zero {
+        color: @text-5;
+      }
+    }
+
+  }
+
+}
+
+/* ------------------------------- */
+
+
+#travelbox {
+
+  text-align: center;
+
+  border: 1px solid @box-border-2;
+  border-radius: 1px;
+
+  padding: 16px 10px;
+  background: @box-bg-2;
+
+  margin: 20px 0;
+
+  position: relative;
+  width: 140px;
+
+  .arrow1, .arrow2 {
+    position: absolute;
+    left: 60px;
+    font-size: 30px;
+    font-weight: bold;
+  }
+
+  .arrow1 {
+    top: -26px;
+  }
+
+  .arrow2 {
+    bottom: -16px;
+  }
+}
+
+.system {
+
+  .system_name {
+    font-weight: bold;
+    font-size: 18px;
+
+    color: @text-6;
+  }
+
+  .system_coords {
+    font-size: 11px;
+  }
+
+  .system_permit {
+    font-size: 11px;
+    font-weight: bold;
+    color: @text-3;
+    padding-left: 10px;
+  }
+
+  .system_population {
+    color: @text-5;
+  }
+
+  .rare {
+    border: 1px solid @box-border-2;
+    border-radius: 1px;
+
+    padding: 10px;
+    background: @box-bg-2;
+
+    margin: 10px 0 0 0;
+
+    position: relative;
+
+    .rare_name {
+      color: @text-4;
+      font-weight: bold;
+    }
+
+    .station_name {
+      font-weight: bold;
+    }
+
+    .station_smallinfos {
+      position: absolute;
+      font-size: 11px;
+
+      top: 5px;
+      right: 5px;
+
+      color: @text-5;
+    }
+
+    .station_faction {
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .station_infos {
+      color: @text-5;
+    }
+
+    .station_facilites {
+      color: @text-5;
+      font-size: 11px;
+    }
+
+    .blackmarket {
+      color: @text-3;
+    }
+
+    .addtoroute {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+
+      font-size: 11px;
+
+      .plus {
+        font-weight: bold;
+        margin-right: 10px;
+      }
+
+    }
+
+  }
+
+}
+
+/* --- */
+
+.cat_system {
+  color: @text-6;
+}
+
+.cat_rare {
+  color: @text-4;
+}
+
+.cat_station {
+  color: @text-5;
+}
+
+.ui-autocomplete {
+  max-height: 200px;
+  overflow-y: auto;
+  /* prevent horizontal scrollbar */
+  overflow-x: hidden;
+}
+
+input[type=checkbox] {
+  margin-top: 8px;
+}
+
+/* --- */
+
+
+#route ul, #route li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+#route {
+
+  .small_info {
+    color: @text-5;
+    text-align: right;
+    font-size: 11px;
+  }
+
+  .routeitem {
+
+    cursor: move;
+    border: 1px solid @box-border-2;
+    border-radius: 1px;
+
+    padding: 10px;
+    background: @box-bg-2;
+
+    margin: 10px 0 0 0;
+
+    & > div {
+      clear: both;
+
+      .distance {
+        position: relative;
+        width: 94px;
+
+        float: left;
+
+        .arrow {
+
+          font-size: 30px;
+          position: absolute;
+          top: -15px;
+          right: -20px;
+
+        }
+
+      }
+
+      .system {
+        float: left;
+
+        padding-left: 25px;
+        color: @text-6;
+        font-weight: bold;
+      }
+
+      .station {
+        float: left;
+        font-size: 11px;
+      }
+      .lsdistance {
+        float: right;
+        font-size: 11px;
+      }
+    }
+
+    .rare {
+      font-weight: bold;
+      margin-top: 25px;
+      color: @text-4;
+    }
+
+    position: relative;
+
+    .delrouteitem {
+      position: absolute;
+
+      top: 5px;
+      right: 5px;
+
+      & > span {
+        padding: 0 5px;
+      }
+    }
+
+  }
+
+}
+
+/* -- */
+
+#help {
+
+  h3 {
+    font-size: 13px;
+    margin: 10px 0 5px 0;
+    color: @text-6;
+  }
+
+  p {
+    margin: 0 0 5px 0;
+
+    font-size: 12px;
+    color: @text-5;
+  }
+
+  a {
+    color: @text-4;
+  }
+
+  a:hover {
+    color: @text-2;
+  }
+}
+
+
+/* --- */
+
+header {
+
+  h1 {
+    font-size: 30px;
+    margin: 0 5px;
+    padding: 0;
+    float: left;
+  }
+
+  .by {
+    float: left;
+    color: @text-5;
+    margin: 5px;
+  }
+
+  .about {
+    float: right;
+    margin-right: 5px;
+
+    &>a {
+
+      span {
+        float: right;
+        text-align: right;
+        font-size: 11px;
+        padding-top: 7px;
+
+        color: @text-5;
+      }
+
+      svg {
+        margin: 2px;
+        float: right;
+
+        &>path {
+          fill: @text-5;
+        }
+      }
+
+    }
+
+    &>a:hover {
+      span {
+        color: @text-2;
+      }
+
+      svg>path {
+        fill: @text-2;
+      }
+    }
+
+  }
+
+}
