@@ -68786,7 +68786,7 @@ if ( typeof module === 'object' ) {
                 z < ocuzt - tol) {
 
                 gridcoordsctx.clearRect(0,0, 1024, 64);
-                gridcoordsctx.fillText("( " + (x / sizefactor).toFixed(1) + " / " + (y / sizefactor).toFixed(1) + " / " + (z / sizefactor).toFixed(1) + " )", 0, 0);
+                gridcoordsctx.fillText("( " + Math.round(x / sizefactor) + " / " + Math.round(y / sizefactor) + " / " + Math.round(z / sizefactor) + " )", 0, 0);
                 gridcoordstexture.needsUpdate = true;
 
                 ocuxt = x;
