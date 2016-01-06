@@ -558,7 +558,7 @@
         var gridmeshsizets = gridmeshsize * sizefactor;
 
         var gridplanesize = 1000;
-        var gridcolor = 0x0dffff;
+        var gridcolor = 0xcccccc;
         var gridcursorcolor = 0xffc66d;
 
         // Gridmaterials

@@ -27,6 +27,8 @@
   @text-5: #888;
   @text-6: #fea;
 
+  @font-1: Michroma, Arial, sans-serif;
+  @font-2: Source Sans Pro, Arial, sans-serif;
 
   @box-border-1: #333;
 
@@ -51,11 +53,9 @@
 
   @header_height: 40px;
   @footer_height: 0px;
-  @sidebar_width: 350px;
+  @sidebar_width: 400px;
 
   @boxmargin: 5px;
-
-  @filterheight: 31px;
 
 /* --- */
 
@@ -64,7 +64,7 @@
 }
 
 body {
-  font-family: Michroma, Arial, sans-serif;
+  font-family: @font-1;
   font-size: 13px;
 
   color: @text-1;
@@ -114,47 +114,13 @@ main>div {
 
 #maparea {
 
-  #filters {
-    height: @filterheight;
-    margin: @boxmargin;
-
-    .filter {
-
-      position: relative;
-      float: left;
-      margin-right: @boxmargin;
-
-      .label {
-        float: left;
-
-        color: @text-5;
-        padding: 5px;
-      }
-
-      input {
-        border: 1px solid @box-border-2;
-        background: #333;
-        color: #fff;
-
-        border-radius: 2px;
-        padding: 5px 5px 4px 5px;
-      }
-
-      #color {
-        width: 320px;
-      }
-
-    }
-
-  }
-
   #map {
     position: absolute;
 
     border: 1px solid @box-border-1;
     border-radius: 1px;
 
-    top: @boxmargin + @filterheight + @boxmargin;
+    top: @boxmargin;
     bottom: @boxmargin;
     left: @boxmargin;
     right: @boxmargin;
@@ -176,7 +142,7 @@ main>div {
 
 nav {
   margin: @boxmargin;
-  height: @filterheight;
+  height: 24px;
 
 
   display: flex;
@@ -187,11 +153,13 @@ nav {
     flex: 1;
 
     margin: 0 @boxmargin/2;
+    padding: 0 5px;
 
     border: 1px solid @inactivetab_border;
     border-radius: 2px;
 
-    line-height: 28px;
+    font-family: @font-2;
+    font-size: 16px;
 
     text-align: center;
 
@@ -220,7 +188,6 @@ nav {
     }
 
     .route_count {
-      font-size: 11px;
 
       color: @text-4;
 
@@ -476,26 +443,53 @@ input[type=checkbox] {
 
 #help {
 
-  h3 {
-    font-size: 13px;
-    margin: 10px 0 5px 0;
-    color: @text-6;
+
+  .section {
+    border: 1px solid @box-border-2;
+    border-radius: 1px;
+    padding: 5px;
+    background: @box-bg-2;
+
+    margin-bottom: 10px;
+
+    h2 {
+      margin: 0 0 5px 0;
+    }
+
+    .inner {
+      -webkit-column-count: 2;
+      -moz-column-count: 2;
+      column-count: 2;
+
+      padding: 5px;
+
+      h3 {
+        font-family: @font-2;
+        font-weight: normal;
+        font-size: 13px;
+        margin: 0 0 5px 0;
+        color: @text-1;
+      }
+
+      p {
+        font-family: @font-2;
+        margin: 0 0 5px 0;
+
+        font-size: 13px;
+        color: @text-5;
+      }
+
+      a {
+        color: @text-4;
+      }
+
+      a:hover {
+        color: @text-2;
+      }
+
+    }
   }
 
-  p {
-    margin: 0 0 5px 0;
-
-    font-size: 12px;
-    color: @text-5;
-  }
-
-  a {
-    color: @text-4;
-  }
-
-  a:hover {
-    color: @text-2;
-  }
 }
 
 
@@ -550,6 +544,42 @@ header {
       svg>path {
         fill: @text-2;
       }
+    }
+
+  }
+
+}
+
+/* -- */
+
+#filters {
+
+
+
+  .filter {
+
+    position: relative;
+    float: left;
+    margin-right: @boxmargin;
+
+    .label {
+      float: left;
+
+      color: @text-5;
+      padding: 5px;
+    }
+
+    input {
+      border: 1px solid @box-border-2;
+      background: #333;
+      color: #fff;
+
+      border-radius: 2px;
+      padding: 5px 5px 4px 5px;
+    }
+
+    #color {
+      width: 320px;
     }
 
   }

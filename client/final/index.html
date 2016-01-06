@@ -17,6 +17,16 @@
             url('fonts/michroma-v7-latin-regular.woff2') format('woff2'),
             url('fonts/michroma-v7-latin-regular.woff') format('woff');
         }
+
+        @font-face {
+            font-family: 'Source Sans Pro';
+            font-style: normal;
+            font-weight: 400;
+            src: local('Source Sans Pro'),
+            url('fonts/Source-Sans-Pro-regular.woff2') format('woff2'),
+            url('fonts/Source-Sans-Pro-regular.woff') format('woff');
+        }
+
     </style>
 
     <link href="style.css" rel="stylesheet" type="text/css" />
@@ -44,7 +54,8 @@
     <main>
         <nav>
             <a id="tab_info">Info</a>
-            <a id="tab_route">Route <span class="route_count route_count_zero">(0)</span></a>
+            <a id="tab_route">Route&nbsp;<span class="route_count route_count_zero">(0)</span></a>
+            <a id="tab_filters">Filters/Settings</a>
             <a id="tab_help"  class="active">Help/About</a>
         </nav>
 
@@ -52,42 +63,59 @@
 
         <div id="help" class="">
 
-            <h2>Controls</h2>
+            <div class="section">
+                <h2>Controls</h2>
 
-            <h3>Mouse Left - Drag</h3>
-            <p>Turn around current position.</p>
+                <div class="inner">
+                    <h3>Mouse Left - Drag</h3>
+                    <p>Turn around current position.</p>
 
-            <h3>Mouse Right - Drag</h3>
-            <p>Pan on x/z - plane.</p>
+                    <h3>Mouse Right - Drag or<br>W-A-S-D Keys</h3>
+                    <p>Pan on x/z - plane.</p>
 
-            <h3>Mouse Middle - Drag</h3>
-            <p>Pan in y-direction.</p>
+                    <h3>Mouse Middle - Drag or<br>R-F Keys</h3>
+                    <p>Pan in y-direction.</p>
 
-            <h3>Mouse Wheel</h3>
-            <p>Zoom Zoom Zoom.</p>
+                    <h3>Mouse Wheel</h3>
+                    <p>Zoom Zoom Zoom.</p>
 
-            <h3>Mouse Left - Click</h3>
-            <p>Select star.</p>
+                    <h3>Mouse Left - Click</h3>
+                    <p>Select star.</p>
 
-            <h3>Mouse Left - Doubleclick</h3>
-            <p>Move to star.</p>
+                    <h3>Mouse Left - Doubleclick</h3>
+                    <p>Move to star.</p>
 
-            <h2>Sourcecode</h2>
-            <p>The sourcecode is freely available on github (MIT-License): <a href="https://github.com/fjw/starmap">fjw/starmap</a>.</p>
+                    <h3></h3>
+                    <p>&nbsp;</p>
 
-            <h2>Data</h2>
-            <p>The list of rares comes from the Elite Dangerous Forum <a href="https://forums.frontier.co.uk/showthread.php?t=63119&page=171">rares list</a>. Thanks to Zoy and all others for this.</p>
-            <p>All additional Information about the Stations and Systems comes from <a href="https://eddb.io/api">EDDB API</a>. Thanks!</p>
-            <p>The last data-import was: 6 January 2016</p>
+                </div>
+            </div>
 
-            <h2>About me</h2>
-            <p>In Elite Dangerous I am CMDR Pertel.</p>
-            <p>In real life I am a eCommerce developer living in beautiful Munich / Germany. You can find out more about me and my projects on <a href="https://github.com/fjw?tab=repositories">github</a> and my <a href="https://www.xing.com/profile/Frederic_Worm">xing</a> profile.</p>
-            <p>If you would like to support my stuff, a warm <a href="#" class="coffeelink">coffee</a> is always helpful. :)</p>
+            <div class="section">
+                <h2>Sourcecode</h2>
+                <div class="inner">
+                    <p>The sourcecode is freely available on github (MIT-License): <a href="https://github.com/fjw/starmap">fjw/starmap</a>.</p>
+                </div>
 
-            <h2>Contact</h2>
-            <p>If you got problems or have suggestions you can write me: fjw@garx.de</p>
+                <h2>Data</h2>
+                <div class="inner">
+                    <p>The list of rares comes from the Elite Dangerous Forum <a href="https://forums.frontier.co.uk/showthread.php?t=63119&page=171">rares list</a>. Thanks to Zoy and all others for this.</p>
+                    <p>All additional Information about the Stations and Systems comes from <a href="https://eddb.io/api">EDDB API</a>. Thanks!</p>
+                    <p>The last data-import was: 6 January 2016</p>
+                </div>
 
+                <h2>About me</h2>
+                <div class="inner">
+                    <p>In Elite Dangerous I am CMDR Pertel.</p>
+                    <p>In real life I am a eCommerce developer living in beautiful Munich / Germany. You can find out more about me and my projects on <a href="https://github.com/fjw?tab=repositories">github</a> and my <a href="https://www.xing.com/profile/Frederic_Worm">xing</a> profile.</p>
+                    <p>If you would like to support my stuff, a warm <a href="#" class="coffeelink">coffee</a> is always helpful. :)</p>
+                </div>
+
+                <h2>Contact</h2>
+                <div class="inner">
+                    <p>If you got problems or have suggestions you can write me: fjw@garx.de</p>
+                </div>
+            </div>
         </div>
 
         <!-- ------------------------------------------------- -->
@@ -5723,10 +5751,7 @@
 
         <!-- ------------------------------------------------- -->
 
-    </main>
-    <div id="maparea">
-
-        <div id="filters">
+        <div id="filters" class="nn">
 
             <div class="filter">
                 <div class="label">Search:</div>
@@ -5755,6 +5780,10 @@
 
         </div>
 
+        <!-- ------------------------------------------------- -->
+
+    </main>
+    <div id="maparea">
         <div id="map"></div>
     </div>
     <footer>
