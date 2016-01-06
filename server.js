@@ -103,6 +103,7 @@ var bcfg = {
 
     datafile: __dirname + "/client/src/data.json",
     datatime: __dirname + "/client/src/datatime.json",
+    others: __dirname + "/client/src/others.json",
 
     tpldir: __dirname + "/client/src/tpls",
     indextpl: __dirname + "/client/src/tpls/index.tpl",
@@ -186,6 +187,7 @@ function buildMarkup() {
         qReadFile(bcfg.stotpl),
         qReadFile(bcfg.raretpl),
         qReadFile(bcfg.datatime),
+        qReadFile(bcfg.others)
 
     ]).then(function(files) {
 
@@ -310,6 +312,7 @@ function buildMarkup() {
         index = index.replace("{{datatime}}", datatime);
 
         index = index.replace("{{stardata}}", files[0].replace(/'/g, "\\'"));
+        index = index.replace("{{otherstars}}", files[6].replace(/'/g, "\\'"));
 
         deferred.resolve(index);
     });

@@ -66,6 +66,7 @@
         ensureLoadedFont("fonts/michroma-v7-latin-regular.woff2", function() {
 
             initObjects();
+            //initOtherStars();
             initEvents();
             initRoute();
 
@@ -171,6 +172,15 @@
         var s = stardata[index];
 
         animationTarget = { x: s.x * sizefactor, y: s.y * sizefactor, z: s.z * sizefactor };
+        animationStart = { x:controls.target.x, y:controls.target.y, z:controls.target.z };
+        animationStartCam = { x:camera.position.x, y:camera.position.y, z:camera.position.z };
+        animationStartTime = Date.now();
+
+    }
+
+    function animateToCoords(x, y, z) {
+
+        animationTarget = { x: x * sizefactor, y: y * sizefactor, z: z * sizefactor };
         animationStart = { x:controls.target.x, y:controls.target.y, z:controls.target.z };
         animationStartCam = { x:camera.position.x, y:camera.position.y, z:camera.position.z };
         animationStartTime = Date.now();
@@ -382,33 +392,57 @@
 
         });
 
+        $.ajax({
+            url: "others.json",
+            method: "GET",
+            dataType: "json"
+        }).done(function(others) {
 
-        var acdata = [];
-        _.each(stardata, function(s, i) {
-            acdata.push({ label: s.name, category: "system", index: i });
 
-            _.each(s.rares, function(r) {
+            var acdata = [];
+            _.each(stardata, function(s, i) {
+                acdata.push({ label: s.name, category: "system", index: i });
 
-                acdata.push({ label: r.name, category: "rare", index: i  });
-                acdata.push({ label: r.station.name, category: "station", index: i  });
+                _.each(s.rares, function(r) {
+
+                    acdata.push({ label: r.name, category: "rare", index: i  });
+                    //acdata.push({ label: r.station.name, category: "station", index: i  });
+
+                });
 
             });
 
+            _.each(others, function(o) {
+                acdata.push({ label: o.name, category: "other", x: o.x, y: o.y, z: o.z });
+            });
+
+            var search = $("#search").catcomplete({
+                delay: 0,
+                minLength: 3,
+                source: acdata,
+                select: function() {
+
+                    var item = _.find(acdata, function(i) { return i.label === search.val(); });
+
+                    if(item.category == "other") {
+                        animateToCoords(item.x, item.y, item.z);
+                    } else {
+                        animateToStar(item.index);
+                        selectByIndex(item.index);
+                    }
+
+                }
+            });
+
+            $(".ui-autocomplete").css("max-height", map_h);
+
+
         });
 
-        var search = $("#search").catcomplete({
-            delay: 0,
-            source: acdata,
-            select: function() {
 
-                var index = _.find(acdata, function(i) { return i.label === search.val(); }).index;
-                animateToStar(index);
-                selectByIndex(index);
 
-            }
-        });
 
-        $(".ui-autocomplete").css("max-height", map_h);
+
 
         // --
 
@@ -749,6 +783,41 @@
         raycaster = new THREE.Raycaster();
 
     }
+
+
+
+    function initOtherStars() {
+
+        var others = new THREE.Object3D();
+
+        _.each(window.otherstars, function(star) {
+
+            var xs = star.x * sizefactor;
+            var ys = star.y * sizefactor;
+            var zs = star.z * sizefactor;
+
+            var otherMaterial = new THREE.MeshBasicMaterial({
+                color: 0xcccccc,
+                shading: THREE.FlatShading,
+                fog: true
+            });
+
+            var otherGeometry = new THREE.SphereGeometry( 0.2, 5, 4 );
+            var otherMesh = new THREE.Mesh(otherGeometry, otherMaterial);
+
+            otherMesh.position.x = xs;
+            otherMesh.position.y = ys;
+            otherMesh.position.z = zs;
+
+            others.add(otherMesh);
+
+        });
+
+        scene.add(others);
+
+    }
+
+
 
     var oldgridy = 0;
     var gridmeshsizewc = gridmeshsize * sizefactor * 2; //precalcs

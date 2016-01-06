@@ -42,7 +42,7 @@ function convertForumData() {
 
             }
         }
-    })
+    });
 
     return list;
 }
@@ -53,7 +53,6 @@ function aggregate(rares) {
     //var rares = JSON.parse(fs.readFileSync(__dirname + "/data/rares.json")); // self written (and corrected) from elite-wiki
     var stations = JSON.parse(fs.readFileSync(__dirname + "/data/stations.json")); // eddb
     var systems = JSON.parse(fs.readFileSync(__dirname + "/data/systems.json")); // eddb
-
 
     var fulldata = [];
 
@@ -104,6 +103,40 @@ function aggregate(rares) {
 
     });
 
+
+    // other systems
+    var others = [];
+    var bounds = 400;
+    _.each(systems, function(s) {
+
+        if( !_.find(fulldata, function(f) { return f.id == s.id; }) ) {
+
+            if( s.x > -bounds && s.x < bounds &&
+                s.y > -bounds && s.y < bounds &&
+                s.z > -bounds && s.z < bounds ) {
+
+                var m = s.name.match(/\s/g);
+
+                if(!m || s.allegiance !== null || m.length <= 1 ) {
+
+
+                    others.push({
+                        name: s.name,
+                        x: s.x,
+                        y: s.y,
+                        z: s.z,
+                        allegiance: s.allegiance
+                    });
+
+                }
+
+            }
+        }
+
+    });
+
+
+
     //cleanup
     _.each(fulldata, function(f) {
 
@@ -135,9 +168,12 @@ function aggregate(rares) {
     });
 
 
+
+
 //  dd(fulldata);
 
     fs.writeFileSync(__dirname + "/client/src/data.json", JSON.stringify(fulldata));
+    fs.writeFileSync(__dirname + "/client/src/others.json", JSON.stringify(others));
     fs.writeFileSync(__dirname + "/client/src/datatime.json", JSON.stringify({time: niceDate(new Date())}));
 
 }
