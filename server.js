@@ -248,13 +248,58 @@ function buildMarkup() {
 
                 thisrare = thisrare.replace("{{rareid}}", i + "-" + r);
 
+                if(rare.station.distance_to_star >= 1000) {
+                    thisrare = thisrare.replace("{{far1_start}}", "");
+                    thisrare = thisrare.replace("{{far1_end}}", "");
+                } else {
+                    thisrare = thisrare.replace(/\{\{far1_start}}.+\{\{far1_end}}/, "");
+                }
+
+                if(rare.station.distance_to_star >= 5000) {
+                    thisrare = thisrare.replace("{{far2_start}}", "");
+                    thisrare = thisrare.replace("{{far2_end}}", "");
+                } else {
+                    thisrare = thisrare.replace(/\{\{far2_start}}.+\{\{far2_end}}/, "");
+                }
+
+                if(rare.station.distance_to_star >= 100000) {
+                    thisrare = thisrare.replace("{{far3_start}}", "");
+                    thisrare = thisrare.replace("{{far3_end}}", "");
+                } else {
+                    thisrare = thisrare.replace(/\{\{far3_start}}.+\{\{far3_end}}/, "");
+                }
+
+                if(rare.suppressed) {
+                    thisrare = thisrare.replace("{{suppressed_start}}", "");
+                    thisrare = thisrare.replace("{{suppressed_end}}", "");
+                } else {
+                    thisrare = thisrare.replace(/\{\{suppressed_start}}.+\{\{suppressed_end}}/, "");
+                }
+
+                if(rare.often_illegal) {
+                    thisrare = thisrare.replace("{{oftenillegal_start}}", "");
+                    thisrare = thisrare.replace("{{oftenillegal_end}}", "");
+
+                    thisrare = thisrare.replace(/\{\{notoftenillegal_start}}.+\{\{notoftenillegal_end}}/, "");
+                } else {
+                    thisrare = thisrare.replace(/\{\{oftenillegal_start}}.+\{\{oftenillegal_end}}/, "");
+
+                    thisrare = thisrare.replace("{{notoftenillegal_start}}", "");
+                    thisrare = thisrare.replace("{{notoftenillegal_end}}", "");
+                }
+                
                 if(rare.station.has_blackmarket) {
                     thisrare = thisrare.replace("{{blackmarket_start}}", "");
                     thisrare = thisrare.replace("{{blackmarket_end}}", "");
+
+                    thisrare = thisrare.replace(/\{\{noblackmarket_start}}.+\{\{noblackmarket_end}}/, "");
                 } else {
                     thisrare = thisrare.replace(/\{\{blackmarket_start}}.+\{\{blackmarket_end}}/, "");
-                }
 
+                    thisrare = thisrare.replace("{{noblackmarket_start}}", "");
+                    thisrare = thisrare.replace("{{noblackmarket_end}}", "");
+                }
+                
                 if(rare.station.has_market) {
                     thisrare = thisrare.replace("{{market_start}}", "");
                     thisrare = thisrare.replace("{{market_end}}", "");
@@ -329,7 +374,7 @@ function formatLargeNums(num) {
     } else if(num > 1000000) {
         return (num / 1000000).toFixed(1) + " Million";
     } else {
-        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "&thinsp;");
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "&#8202;");
     }
 }
 

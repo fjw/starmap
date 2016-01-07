@@ -1,4 +1,13 @@
-<div class="rare">
+<div class="rare
+        {{noblackmarket_start}} noblackmarket{{noblackmarket_end}}
+        {{suppressed_start}} suppressed{{suppressed_end}}
+        {{oftenillegal_start}} oftenillegal{{oftenillegal_end}}
+        {{notoftenillegal_start}} notoftenillegal{{notoftenillegal_end}}
+        {{far1}} far1{{far1_end}}
+        {{far2}} far2{{far2_end}}
+        {{far3}} far3{{far3_end}}
+        ">
+
     <div class="station_smallinfos">( <span class="station_type">{{type}}</span>, <span class="station_padsize">{{padsize}}</span> )</div>
     <p>
         <span class="rare_name">{{name}}</span>
@@ -16,7 +25,7 @@
     </p>
     <p class="station_facilites">
         {{blackmarket_start}}<span class="blackmarket">Blackmarket</span><br>{{blackmarket_end}}
-        {{market_start}}Commodities Market<br>{{market_end}}
+        {{market_start}}Commodities<br>{{market_end}}
         {{refuel_start}}Refuel<br>{{refuel_end}}
         {{repair_start}}Repair<br>{{repair_end}}
         {{rearm_start}}Rearm<br>{{rearm_end}}

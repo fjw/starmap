@@ -68118,26 +68118,32 @@ if ( typeof module === 'object' ) {
 
             if (intersects.length) {
 
-                var o = intersects[0].object;
+                intersects = _.filter(intersects, function(ins) { return ins.object.parent.visible; });
 
-                if(hoveredMesh != o) {
-                    // first time hovered inside a new mesh
+                if (intersects.length) {
 
-                    if(hoveredMesh) {
-                        // there is an old mesh, reset it (hovered out of another)
-                        hoveredMesh.material.color.setHex(hoveredOriginalColor);
+                    var o = intersects[0].object;
+
+                    if (hoveredMesh != o) {
+                        // first time hovered inside a new mesh
+
+                        if (hoveredMesh) {
+                            // there is an old mesh, reset it (hovered out of another)
+                            hoveredMesh.material.color.setHex(hoveredOriginalColor);
+                        }
+
+                        hoveredMesh = o;
+                        hoveredOriginalColor = o.material.color.getHex();
+
+                        if (o != selectedMesh) {
+                            o.material.color.setHex(hoverColor);
+                        }
+
+                        //mapcontainer.css("cursor", "pointer");
+
+                        updateInfos();
                     }
 
-                    hoveredMesh = o;
-                    hoveredOriginalColor = o.material.color.getHex();
-
-                    if(o != selectedMesh) {
-                        o.material.color.setHex(hoverColor);
-                    }
-
-                    //mapcontainer.css("cursor", "pointer");
-
-                    updateInfos();
                 }
 
             } else {
@@ -68181,7 +68187,7 @@ if ( typeof module === 'object' ) {
 
         updateInfos();
 
-        if(colorfilter.val() == "rare") {
+        if(colorizer.val() == "rare") {
             colorByRareDistance();
         }
 
@@ -68192,7 +68198,7 @@ if ( typeof module === 'object' ) {
     }
 
 
-    var colorfilter;
+    var colorizer;
     function initEvents() {
 
         $(window).on("resize", function() {
@@ -68236,7 +68242,7 @@ if ( typeof module === 'object' ) {
 
                     updateInfos();
 
-                    if(colorfilter.val() == "rare") {
+                    if(colorizer.val() == "rare") {
                         colorByRareDistance();
                     }
 
@@ -68264,9 +68270,9 @@ if ( typeof module === 'object' ) {
 
         });
 
-        colorfilter = $("#color").selectmenu();
-        colorfilter.on("selectmenuchange", function() {
-            filterChange();
+        colorizer = $("#color").selectmenu();
+        colorizer.on("selectmenuchange", function() {
+            colorizingChange();
             $("#color-button").blur(); //shitty jquery-ui behaviour
         });
 
@@ -68319,15 +68325,9 @@ if ( typeof module === 'object' ) {
                 }
             });
 
-            $(".ui-autocomplete").css("max-height", map_h);
-
+            $(".ui-autocomplete").css("max-height", window.innerHeight - $(".ui-autocomplete-input")[0].getBoundingClientRect().top - 40 + "px");
 
         });
-
-
-
-
-
 
         // --
 
@@ -68349,7 +68349,144 @@ if ( typeof module === 'object' ) {
             }
         });
 
+
+        // --
+
+        updateFilters();
+
+        $(  "#showsuppressed, " +
+            "#shownoblackmarket, " +
+            "input[name='illegal_option'], " +
+            "input[name='sdistance_option']").on("click", function() {
+
+            updateFilters();
+
+        });
+
     }
+
+
+    var filter_showsuppressed = null;
+    var filter_shownoblackmarket = null;
+    var filter_showillegal = null;
+    var filter_sdistance = null;
+
+    var nodes_all = $("#info .system .rares .rare");
+    var nodes_noblackmarket = $("#info .system .rares .noblackmarket");
+    var nodes_suppressed = $("#info .system .rares .suppressed");
+    var nodes_oftenillegal = $("#info .system .rares .oftenillegal");
+    var nodes_notoftenillegal = $("#info .system .rares .notoftenillegal");
+    var nodes_far1 = $("#info .system .rares .far1");
+    var nodes_far2 = $("#info .system .rares .far2");
+    var nodes_far3 = $("#info .system .rares .far3");
+
+
+    function updateFilters() {
+
+        filter_showsuppressed = $("#showsuppressed").is(":checked");
+        filter_shownoblackmarket = $("#shownoblackmarket").is(":checked");
+
+        var iopt = $("input[name='illegal_option']:checked").attr("id");
+        if(iopt == "illegal_option1") {
+            filter_showillegal = "only";
+        } else if(iopt == "illegal_option2") {
+            filter_showillegal = false;
+        } else if(iopt == "illegal_option3") {
+            filter_showillegal = true;
+        }
+
+        var sdopt = $("input[name='sdistance_option']:checked").attr("id");
+        if(sdopt == "sdistance_option1") {
+            filter_sdistance = 1;
+        } else if(sdopt == "sdistance_option2") {
+            filter_sdistance = 2;
+        } else if(sdopt == "sdistance_option3") {
+            filter_sdistance = 3;
+        } else if(sdopt == "sdistance_option4") {
+            filter_sdistance = true;
+        }
+
+
+        nodes_all.show();
+
+        if(!filter_shownoblackmarket) {
+            nodes_noblackmarket.hide();
+        }
+
+        if(!filter_showsuppressed) {
+            nodes_suppressed.hide();
+        }
+
+        if(filter_showillegal === "only") {
+            nodes_notoftenillegal.hide();
+        } else if(filter_showillegal === false) {
+            nodes_oftenillegal.hide();
+        }
+
+        if(filter_sdistance === 1) {
+            nodes_far1.hide();
+        } else if(filter_sdistance === 2) {
+            nodes_far2.hide();
+        } else if(filter_sdistance === 3) {
+            nodes_far3.hide();
+        }
+
+
+        filter(function(s) {
+
+            if(!filter_showsuppressed && _.all(s.rares, function(r) { return r.suppressed; })) {
+                return false;
+            }
+
+            if(!filter_shownoblackmarket && _.all(s.rares, function(r) { return r.station.has_blackmarket === 0; })) {
+                return false;
+            }
+
+            if(filter_showillegal === false && _.all(s.rares, function(r) { return r.often_illegal; })) {
+                return false;
+            }
+
+            if(filter_showillegal === "only" && _.all(s.rares, function(r) { return !r.often_illegal; })) {
+                return false;
+            }
+
+            if(filter_sdistance === 1 && _.all(s.rares, function(r) { return r.station.distance_to_star > 1000; })) {
+                return false;
+            }
+
+            if(filter_sdistance === 2 && _.all(s.rares, function(r) { return r.station.distance_to_star > 5000; })) {
+                return false;
+            }
+
+            if(filter_sdistance === 3 && _.all(s.rares, function(r) { return r.station.distance_to_star > 100000; })) {
+                return false;
+            }
+
+            return true;
+
+        });
+
+
+
+
+    }
+
+    function filter(testfnc) {
+
+        _.each(starobjs, function(s) {
+
+            if(testfnc(s.data)) {
+                s.starObj.visible = true;
+            } else {
+                s.starObj.visible = false;
+            }
+
+        });
+
+        placeGrid(true);
+    }
+
+    // --
 
     var resizetimeout = null;
     function resize() {
@@ -68368,7 +68505,7 @@ if ( typeof module === 'object' ) {
 
             renderer.setSize(map_w, map_h);
 
-            $(".ui-autocomplete").css("max-height", map_h);
+            $(".ui-autocomplete").css("max-height", window.innerHeight - $(".ui-autocomplete-input")[0].getBoundingClientRect().top - 40 + "px");
 
         }, 500);
 
@@ -69048,9 +69185,9 @@ if ( typeof module === 'object' ) {
         return color_rgb2hex({r:r,g:g,b:b});
     }
 
-    function filterChange() {
+    function colorizingChange() {
 
-        var v = colorfilter.val();
+        var v = colorizer.val();
 
         if( v == "allegiance") {
             colorByAllegiance();
@@ -69058,9 +69195,7 @@ if ( typeof module === 'object' ) {
             colorByBlackmarket();
         } else if( v == "stationeconomy" ) {
             colorByStationEconomy();
-        } else if( v == "stationeconomy" ) {
-            colorByStationDistance();
-        } else if( v == "stationdistance" ) {
+        } else if( v == "stationdistance" ) { // diabled atm
             colorByStationDistance();
         } else if( v == "rare" ) {
             colorByRareDistance();
@@ -69282,53 +69417,73 @@ if ( typeof module === 'object' ) {
 /*
 
  {
-     "name":"Any Na",
-     "x":125.65625,"y":-1.71875,"z":14.09375,
-     "faction":"Any Na General Group",
-     "population":631208592,
-     "government":"Corporate",
-     "allegiance":"Independent",
-     "state":"None",
-     "security":"Medium",
-     "primary_economy":"Agriculture",
-     "power":"Arissa Lavigny-Duval",
-     "power_state":"Exploited",
-     "needs_permit":0,
-     "rares":[
-         {
-             "name":"Any Na Coffee",
-             "station":{
-                 "name":"Libby Orbital",
-                 "max_landing_pad_size":"L",
-                 "distance_to_star":580,
-                 "faction":"Any Na General Group",
-                 "government":"Democracy",
-                 "allegiance":"Federation",
-                 "state":"None",
-                 "type":"Orbis Starport",
-                 "has_blackmarket":0,
-                 "has_market":1,
-                 "has_refuel":1,
-                 "has_repair":1,
-                 "has_rearm":1,
-                 "has_outfitting":1,
-                 "has_shipyard":1,
-                 "has_commodities":1,
-                 "import_commodities":[
-                    "Pesticides","Aquaponic Systems","Biowaste"
-                 ],
-                 "export_commodities":[
-                    "Hydrogen Fuel","Fruit and Vegetables","Grain"
-                 ],
-                 "prohibited_commodities":[
-                    "Narcotics","Tobacco","Combat Stabilisers","Imperial Slaves","Slaves","Personal Weapons","Battle Weapons","Toxic Waste","Lucan Onion Head","Trinkets Of Hidden Fortune"
-                 ],
-                 "economies":[
-                    "Agriculture"
-                 ]
+    "name":"Gliese 1269",
+    "x":-167.4375,
+    "y":-132.375,
+    "z":36.8125,
+    "faction":"Jaque",
+    "population":750,
+    "government":"Cooperative",
+    "allegiance":"Independent",
+    "state":"None",
+    "security":"Low",
+    "primary_economy":"Tourism",
+    "power":null,
+    "power_state":null,
+    "needs_permit":0,
+    "rares":[{
+        "name":"Jaques Queintian Still",
+        "category":"Consumer Items",
+        "price":8435,
+        "max_cap":"18",
+        "suppressed":false,
+        "sc_est_mins":2,
+        "often_illegal":false,
+        "est_sell150":26997.75,
+        "est_unit_profit150":18562.75,
+        "est_total_profit150":334129.5,
+        "station":{
+            "name":"Jaques Station",
+            "max_landing_pad_size":"L",
+            "distance_to_star":85,
+            "faction":"Jaque",
+            "government":"Cooperative",
+            "allegiance":"Independent",
+            "state":"None",
+            "type_id":7,
+            "type":"Ocellus Starport",
+            "has_blackmarket":1,
+            "has_market":1,
+            "has_refuel":1,
+            "has_repair":1,
+            "has_rearm":1,
+            "has_outfitting":1,
+            "has_shipyard":0,
+            "has_commodities":1,
+            "import_commodities":[
+                "Beer",
+                "Gold",
+                "Silver"
+            ],
+            "export_commodities":[
+                "Hydrogen Fuel",
+                "Biowaste",
+                "Limpet"
+            ],
+            "prohibited_commodities":[
+                "Narcotics",
+                "Combat Stabilisers",
+                "Imperial Slaves",
+                "Slaves",
+                "Battle Weapons",
+                "Toxic Waste",
+                "Trinkets Of Hidden Fortune"
+            ],
+            "economies":["Tourism"],
+            "is_planetary":0
             }
-         }
-     ]
- }
-
+            }
+            ]
+            }
+ 
  */

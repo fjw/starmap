@@ -136,7 +136,6 @@ function aggregate(rares) {
     });
 
 
-
     //cleanup
     _.each(fulldata, function(f) {
 
@@ -151,6 +150,7 @@ function aggregate(rares) {
             delete r.station.updated_at;
             delete r.station.shipyard_updated_at;
             delete r.station.outfitting_updated_at;
+            delete r.station.market_updated_at;
             delete r.station.id;
             delete r.station.system_id;
 

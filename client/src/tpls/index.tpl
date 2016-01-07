@@ -61,33 +61,18 @@
 
         <!-- ------------------------------------------------- -->
 
-        <div id="help" class="">
+        <div id="help" class="nn">
 
             <div class="section">
                 <h2>Controls</h2>
 
                 <div class="inner">
-                    <h3>Mouse Left - Drag</h3>
-                    <p>Turn around current position.</p>
-
-                    <h3>Mouse Right - Drag or<br>W-A-S-D Keys</h3>
-                    <p>Pan on x/z - plane.</p>
-
-                    <h3>Mouse Middle - Drag or<br>R-F Keys</h3>
-                    <p>Pan in y-direction.</p>
-
-                    <h3>Mouse Wheel</h3>
-                    <p>Zoom Zoom Zoom.</p>
-
-                    <h3>Mouse Left - Click</h3>
-                    <p>Select star.</p>
-
-                    <h3>Mouse Left - Doubleclick</h3>
-                    <p>Move to star.</p>
-
-                    <h3></h3>
-                    <p>&nbsp;</p>
-
+                    <p><b>Mouse Left - Drag</b><br>Turn around current position.</p>
+                    <p><b>Mouse Right - Drag or W-A-S-D&nbsp;Keys</b><br>Pan on x/z - plane.</p>
+                    <p><b>Mouse Middle - Drag or R-F&nbsp;Keys</b><br>Pan in y-direction.</p>
+                    <p><b>Mouse Wheel</b><br>Zoom Zoom Zoom.</p>
+                    <p><b>Mouse Left - Click</b><br>Select star.</p>
+                    <p><b>Mouse Left - Doubleclick</b><br>Move to star.</p>
                 </div>
             </div>
 
@@ -99,7 +84,7 @@
 
                 <h2>Data</h2>
                 <div class="inner">
-                    <p>The list of rares comes from the Elite Dangerous Forum <a href="https://forums.frontier.co.uk/showthread.php?t=63119&page=171">rares list</a>. Thanks to Zoy and all others for this.</p>
+                    <p>The list of rares comes from the Elite Dangerous Forum <a href="https://forums.frontier.co.uk/showthread.php?t=63119&page=171">rares list</a>. Thanks to all the Forum users for this.</p>
                     <p>All additional Information about the Stations and Systems comes from <a href="https://eddb.io/api">EDDB API</a>. Thanks!</p>
                     <p>The last data-import was: {{datatime}}</p>
                 </div>
@@ -151,31 +136,103 @@
 
         <!-- ------------------------------------------------- -->
 
-        <div id="filters" class="nn">
+        <div id="filters" class="">
 
-            <div class="filter">
-                <div class="label">Search:</div>
-                <input type="text" id="search">
-            </div>
+            <div class="section">
 
-            <div class="filter">
-
-                <div class="label">Color by:</div>
-                <select name="color" id="color">
-                    <option value="rare" selected="selected">optimal distance from selected</option>
-                    <option value="allegiance">allegiance of system</option>
-                    <option value="stationdistance">station distance from star</option>
-                    <option value="stationeconomy">economy of station</option>
-                    <option value="blackmarket">has blackmarket</option>
-                </select>
+                <div class="filter">
+                    <div class="label">Search for<br>Systems or Rares:</div>
+                    <div class="inputcontainer">
+                        <input type="text" id="search">
+                    </div>
+                </div>
 
             </div>
 
-            <div class="filter">
+            <div class="section">
 
-                <div class="label">Show FPS:</div>
-                <input type="checkbox" id="showfps">
+                <div class="filter">
+                    <div class="label">Color by:</div>
+                    <select name="color" id="color">
+                        <option value="rare" selected="selected">optimal distance from selected</option>
+                        <option value="allegiance">allegiance of system</option>
+                        <option value="stationeconomy">economy of station</option>
+                        <option value="blackmarket">station has blackmarket</option>
+                    </select>
+                </div>
 
+                <div class="filter">
+                    <div class="label">Suppressed goods:</div>
+                    <div class="toggle_checkbox">
+                        <input type="checkbox" id="showsuppressed" checked>
+                        <label for="showsuppressed">
+                            <div class="toggle_checkbox_off">hide</div>
+                            <div class="toggle_checkbox_on">show</div>
+                            <div class="toggle_checkbox_slider"></div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="filter">
+                    <div class="label forcheckbox">Stations without blackmarket:</div>
+                    <div class="toggle_checkbox">
+                        <input type="checkbox" id="shownoblackmarket" checked>
+                        <label for="shownoblackmarket">
+                            <div class="toggle_checkbox_off">hide</div>
+                            <div class="toggle_checkbox_on">show</div>
+                            <div class="toggle_checkbox_slider"></div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="filter">
+                    <div class="label">Often illegal goods:</div>
+                    <div class="toggle_radio3">
+                        <input type="radio" class="toggle_option1" id="illegal_option1" name="illegal_option">
+                        <input type="radio" class="toggle_option2" id="illegal_option2" name="illegal_option">
+                        <input type="radio" class="toggle_option3" id="illegal_option3" name="illegal_option" checked>
+
+                        <label for="illegal_option1">only</label>
+                        <label for="illegal_option2">hide</label>
+                        <label for="illegal_option3">show</label>
+
+                        <div class="toggle_option_slider"></div>
+                    </div>
+                </div>
+
+                <div class="filter fulllength">
+                    <div class="label">Show only stations with distance:</div>
+
+                    <div class="toggle_radio4">
+                        <input type="radio" class="toggle_option1" id="sdistance_option1" name="sdistance_option">
+                        <input type="radio" class="toggle_option2" id="sdistance_option2" name="sdistance_option">
+                        <input type="radio" class="toggle_option3" id="sdistance_option3" name="sdistance_option">
+                        <input type="radio" class="toggle_option4" id="sdistance_option4" name="sdistance_option" checked>
+
+                        <label for="sdistance_option1">&lt; 1&#8202;000 Ls</label>
+                        <label for="sdistance_option2">&lt; 5&#8202;000 Ls</label>
+                        <label for="sdistance_option3">&lt; 100&#8202;000 Ls</label>
+                        <label for="sdistance_option4">All</label>
+
+                        <div class="toggle_option_slider"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="section">
+                <div class="filter">
+                    <div class="label forcheckbox">FPS-Graph:</div>
+                    <div class="toggle_checkbox">
+                        <input type="checkbox" id="showfps" checked>
+                        <label for="showfps">
+                            <div class="toggle_checkbox_off">disabled</div>
+                            <div class="toggle_checkbox_on">enabled</div>
+                            <div class="toggle_checkbox_slider"></div>
+                        </label>
+                    </div>
+                </div>
             </div>
 
         </div>
