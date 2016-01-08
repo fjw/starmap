@@ -486,14 +486,14 @@
     var filter_showillegal = null;
     var filter_sdistance = null;
 
-    var nodes_all = $("#info .system .rares .rare");
-    var nodes_noblackmarket = $("#info .system .rares .noblackmarket");
-    var nodes_suppressed = $("#info .system .rares .suppressed");
-    var nodes_oftenillegal = $("#info .system .rares .oftenillegal");
-    var nodes_notoftenillegal = $("#info .system .rares .notoftenillegal");
-    var nodes_far1 = $("#info .system .rares .far1");
-    var nodes_far2 = $("#info .system .rares .far2");
-    var nodes_far3 = $("#info .system .rares .far3");
+    var nodes_all = infocontainer.find(".system .rares .rare");
+    var nodes_noblackmarket = infocontainer.find(".system .rares .noblackmarket");
+    var nodes_suppressed = infocontainer.find(".system .rares .suppressed");
+    var nodes_oftenillegal = infocontainer.find(".system .rares .oftenillegal");
+    var nodes_notoftenillegal = infocontainer.find(".system .rares .notoftenillegal");
+    var nodes_far1 = infocontainer.find(".system .rares .far1");
+    var nodes_far2 = infocontainer.find(".system .rares .far2");
+    var nodes_far3 = infocontainer.find(".system .rares .far3");
 
 
     function updateFilters() {
@@ -589,13 +589,7 @@
     function filter(testfnc) {
 
         _.each(starobjs, function(s) {
-
-            if(testfnc(s.data)) {
-                s.starObj.visible = true;
-            } else {
-                s.starObj.visible = false;
-            }
-
+            s.starObj.visible = !!testfnc(s.data);
         });
 
         placeGrid(true);

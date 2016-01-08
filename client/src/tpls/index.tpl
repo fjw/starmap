@@ -105,7 +105,7 @@
 
         <!-- ------------------------------------------------- -->
 
-        <div id="info" class="nn">
+        <div id="info" class="">
 
             <div id="from">
 
@@ -136,7 +136,7 @@
 
         <!-- ------------------------------------------------- -->
 
-        <div id="filters" class="">
+        <div id="filters" class="nn">
 
             <div class="section">
 

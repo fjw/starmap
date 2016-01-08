@@ -62,6 +62,7 @@
   @header_height: 40px;
   @footer_height: 0px;
   @sidebar_width: 400px;
+  @nav_height: 24px;
 
   @boxmargin: 5px;
 
@@ -98,7 +99,15 @@ header {
 main {
   width: @sidebar_width;
   left: 0; top: @header_height; bottom: @footer_height;
-  overflow: auto;
+
+  >div {
+    position: absolute;
+    top: @nav_height + @boxmargin;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: auto;
+  }
 }
 
 #maparea {
@@ -130,7 +139,7 @@ main>div {
 
     top: @boxmargin;
     bottom: @boxmargin;
-    left: @boxmargin;
+    left: 0;
     right: @boxmargin;
 
     overflow: hidden;
@@ -150,7 +159,7 @@ main>div {
 
 nav {
   margin: @boxmargin;
-  height: 24px;
+  height: @nav_height;
 
 
   display: flex;
@@ -211,129 +220,157 @@ nav {
 /* ------------------------------- */
 
 
-#travelbox {
+#info {
 
-  text-align: center;
+  font-family: @font-2;
 
-  border: 1px solid @box-border-2;
-  border-radius: 1px;
+  #travelbox {
 
-  padding: 16px 10px;
-  background: @box-bg-2;
+    text-align: center;
 
-  margin: 20px 0;
-
-  position: relative;
-  width: 140px;
-
-  .arrow1, .arrow2 {
-    position: absolute;
-    left: 60px;
-    font-size: 30px;
-    font-weight: bold;
-  }
-
-  .arrow1 {
-    top: -26px;
-  }
-
-  .arrow2 {
-    bottom: -16px;
-  }
-}
-
-.system {
-
-  .system_name {
-    font-weight: bold;
-    font-size: 18px;
-
-    color: @text-6;
-  }
-
-  .system_coords {
-    font-size: 11px;
-  }
-
-  .system_permit {
-    font-size: 11px;
-    font-weight: bold;
-    color: @text-3;
-    padding-left: 10px;
-  }
-
-  .system_population {
-    color: @text-5;
-  }
-
-  .rare {
     border: 1px solid @box-border-2;
     border-radius: 1px;
 
-    padding: 10px;
+    padding: 16px 10px;
     background: @box-bg-2;
 
-    margin: 10px 0 0 0;
+    margin: 20px 0;
 
     position: relative;
+    width: 140px;
 
-    &.suppressed {
-      background: #f00;
-    }
-
-    .rare_name {
-      color: @text-4;
-      font-weight: bold;
-    }
-
-    .station_name {
-      font-weight: bold;
-    }
-
-    .station_smallinfos {
+    .arrow1, .arrow2 {
       position: absolute;
-      font-size: 11px;
-
-      top: 5px;
-      right: 5px;
-
-      color: @text-5;
-    }
-
-    .station_faction {
-      font-size: 13px;
+      left: 60px;
+      font-size: 30px;
       font-weight: bold;
     }
 
-    .station_infos {
-      color: @text-5;
+    .arrow1 {
+      top: -26px;
     }
 
-    .station_facilites {
-      color: @text-5;
-      font-size: 11px;
+    .arrow2 {
+      bottom: -16px;
+    }
+  }
+
+  .system {
+
+    .system_name {
+      font-weight: bold;
+      font-size: 18px;
+
+      color: @text-6;
+
+      font-family: @font-1;
     }
 
-    .blackmarket {
+    .system_permit {
+      font-weight: bold;
       color: @text-3;
+      padding-left: 10px;
     }
 
-    .addtoroute {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
+    .system_population {
+      color: @text-5;
+    }
 
-      font-size: 11px;
+    .rare {
+      border: 1px solid @box-border-2;
+      border-radius: 1px;
 
-      .plus {
-        font-weight: bold;
-        margin-right: 10px;
+      padding: 10px;
+      background: @box-bg-2;
+
+      margin: 10px 0 0 0;
+
+      position: relative;
+
+      p {
+        margin: 5px 0;
+      }
+
+      .station_smallinfos {
+        position: absolute;
+        font-size: 11px;
+
+        top: 5px;
+        right: 5px;
+
+        color: @text-5;
+      }
+
+      .station_faction {
+        font-size: 14px;
+      }
+
+      .station_infos {
+        color: @text-5;
+      }
+
+      .station_facilites {
+        color: @text-5;
+      }
+
+      .blackmarket {
+        color: @text-3;
+      }
+
+      .addtoroute {
+        font-family: @font-2;
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+
+
+        .plus {
+          font-weight: bold;
+          margin-right: 10px;
+        }
+
       }
 
     }
 
   }
 
+}
+
+.raresummary_box {
+
+  margin: 10px 0;
+
+  .rare_name {
+    color: @text-4;
+    font-weight: bold;
+    font-family: @font-1;
+  }
+
+  .station_name {
+    font-weight: bold;
+  }
+
+}
+
+.oftenillegal .raresummary_box .rare_name:after {
+  content: " !often illegal!";
+  color: @text-3;
+  font-family: @font-2;
+  font-weight: normal;
+}
+
+.suppressed {
+  outline: 1px dashed @text-3;
+}
+
+.suppressed .raresummary_box:after {
+  content: "currently suppressed due to political situation";
+
+  font-size: 16px;
+  text-align: center;
+  width: 150px;
+  color: @text-3;
 }
 
 /* --- */

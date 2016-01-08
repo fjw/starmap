@@ -3,25 +3,24 @@
         {{suppressed_start}} suppressed{{suppressed_end}}
         {{oftenillegal_start}} oftenillegal{{oftenillegal_end}}
         {{notoftenillegal_start}} notoftenillegal{{notoftenillegal_end}}
-        {{far1}} far1{{far1_end}}
-        {{far2}} far2{{far2_end}}
-        {{far3}} far3{{far3_end}}
+        {{far1_start}} far1{{far1_end}}
+        {{far2_start}} far2{{far2_end}}
+        {{far3_start}} far3{{far3_end}}
         ">
 
     <div class="station_smallinfos">( <span class="station_type">{{type}}</span>, <span class="station_padsize">{{padsize}}</span> )</div>
-    <p>
-        <span class="rare_name">{{name}}</span>
-    </p>
-    <p>
-        <span class="station_name">{{station_name}}</span><br>
-        <span class="station_distance">{{distance}}</span> Ls
-    </p>
+
+    <div class="raresummary_box">
+        <div><span class="rare_name">{{name}}</span></div>
+        <div><span class="station_name">{{station_name}}</span> - <span class="station_distance">{{distance}}</span> Ls</div>
+
+    </div>
+
     <p class="station_infos">
         <span class="station_faction">{{faction}}</span>
     </p>
     <p class="station_infos">
-        <span class="station_allegiance">{{allegiance}}</span> / <span class="station_government">{{government}}</span><br>
-        <span class="station_economies">{{economies}}</span>
+        <span class="station_allegiance">{{allegiance}}</span> / <span class="station_government">{{government}}</span> / <span class="station_economies">{{economies}}</span>
     </p>
     <p class="station_facilites">
         {{blackmarket_start}}<span class="blackmarket">Blackmarket</span><br>{{blackmarket_end}}
