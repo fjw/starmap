@@ -201,7 +201,7 @@
                 </div>
 
                 <div class="filter fulllength">
-                    <div class="label">Show only stations with distance:</div>
+                    <div class="label">Show only stations within distance:</div>
 
                     <div class="toggle_radio4">
                         <input type="radio" class="toggle_option1" id="sdistance_option1" name="sdistance_option">
