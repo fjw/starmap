@@ -61,7 +61,7 @@
 
         <!-- ------------------------------------------------- -->
 
-        <div id="help" class="nn">
+        <div id="help" class="">
 
             <div class="section">
                 <h2>Controls</h2>
@@ -105,7 +105,7 @@
 
         <!-- ------------------------------------------------- -->
 
-        <div id="info" class="">
+        <div id="info" class="nn">
 
             <div id="from">
 
