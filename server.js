@@ -342,6 +342,43 @@ function buildMarkup() {
                     thisrare = thisrare.replace(/\{\{shipyard_start}}.+\{\{shipyard_end}}/, "");                    
                 }
 
+                /* -- */
+
+                var tonnes = "";
+                for(var t=1; t <= rare.max_cap; t++) {
+
+                    var c = "";
+                    if(t <= rare.supply_rate_min) {
+                        c = ' class="sure"';
+                    } else if(t <= rare.supply_rate_max) {
+                        c = ' class="probable"'
+                    }
+
+                    tonnes += "<div"+c+"></div>";
+                }
+                thisrare = thisrare.replace("{{tonnes}}", tonnes);
+
+                thisrare = thisrare.replace("{{max}}", rare.max_cap+" t");
+
+                var supply;
+                if(rare.supply_rate_min === null || rare.supply_rate_max === null) {
+                    supply = "no data";
+                } else {
+
+                    if(rare.supply_rate_min === rare.supply_rate_max) {
+                        supply = "supply "+rare.supply_rate_min+" t";
+                    } else {
+                        supply = "supply "+rare.supply_rate_min+"-"+rare.supply_rate_max+" t";
+                    }
+
+                }
+                thisrare = thisrare.replace("{{supply}}", supply);
+
+
+                thisrare = thisrare.replace("{{price}}", formatLargeNums(rare.price));
+
+                /* -- */
+
                 thisrares.push(thisrare);
             });
 

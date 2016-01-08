@@ -59,10 +59,10 @@
 
 /* --- */
 
-  @header_height: 40px;
+  @header_height: 30px;
   @footer_height: 0px;
   @sidebar_width: 400px;
-  @nav_height: 24px;
+  @nav_height: 46px;
 
   @boxmargin: 5px;
 
@@ -102,7 +102,7 @@ main {
 
   >div {
     position: absolute;
-    top: @nav_height + @boxmargin;
+    top: @nav_height + @boxmargin + @boxmargin;
     bottom: 0;
     left: 0;
     right: 0;
@@ -158,63 +158,66 @@ main>div {
 }
 
 nav {
-  margin: @boxmargin;
-  height: @nav_height;
 
+  >div {
 
-  display: flex;
-  justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
 
-  &>a {
+    margin: @boxmargin;
+    height: @nav_height / 2;
 
-    flex: 1;
+    & > a {
 
-    margin: 0 @boxmargin/2;
-    padding: 0 5px;
+      flex: 1;
 
-    border: 1px solid @inactivetab_border;
-    border-radius: 2px;
+      margin: 0 @boxmargin/2;
+      padding: 0 5px;
 
-    font-family: @font-2;
-    font-size: 16px;
+      border: 1px solid @inactivetab_border;
+      border-radius: 2px;
 
-    text-align: center;
+      font-family: @font-2;
+      font-size: 16px;
 
-    &:first-child {
-      margin-left: 0;
-    }
+      text-align: center;
 
-    &:last-child {
-      margin-right: 0;
-    }
-
-    background: @inactivetab_bg;
-    color: @inactivetab_color;
-
-    &:hover {
-      color: @hovertab_color;
-      border-color: @hovertab_border;
-
-      cursor: pointer;
-    }
-
-    &.active {
-      background: @activetab_bg;
-      color: @activetab_color;
-      border-color: @activetab_border;
-    }
-
-    .route_count {
-
-      color: @text-4;
-
-      &.route_count_zero {
-        color: @text-5;
+      &:first-child {
+        margin-left: 0;
       }
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      background: @inactivetab_bg;
+      color: @inactivetab_color;
+
+      &:hover {
+        color: @hovertab_color;
+        border-color: @hovertab_border;
+
+        cursor: pointer;
+      }
+
+      &.active {
+        background: @activetab_bg;
+        color: @activetab_color;
+        border-color: @activetab_border;
+      }
+
+      .route_count {
+
+        color: @text-4;
+
+        &.route_count_zero {
+          color: @text-5;
+        }
+      }
+
     }
 
   }
-
 }
 
 /* ------------------------------- */
@@ -238,6 +241,9 @@ nav {
 
     position: relative;
     width: 140px;
+
+    font-size: 15px;
+    font-weight: bold;
 
     .arrow1, .arrow2 {
       position: absolute;
@@ -351,6 +357,64 @@ nav {
     font-weight: bold;
   }
 
+  .tonnes_container {
+    position: absolute;
+    top: 40px;
+    right: 15px;
+
+    .max {
+      position: absolute;
+      top: -20px;
+      right: 0;
+      width: 60px;
+      text-align: right;
+
+      font-size: 15px;
+      color: @text-5;
+    }
+
+    .supply {
+      position: absolute;
+
+      transform: rotate(-90deg);
+      transform-origin: left top 0;
+
+      width: 100px;
+      bottom: -18px;
+      left: -20px;
+
+      color: @text-5;
+
+      font-size: 15px;
+    }
+
+    .tonnes {
+      width: 15px;
+      height: 100px;
+
+      display: flex;
+      flex-direction: column-reverse;
+      justify-content: space-between;
+
+      > div {
+        margin: 0 0 1px 0;
+
+        background: #444;
+        flex: 1;
+
+        &.sure {
+          background: #282;
+        }
+
+        &.probable {
+          background: #882;
+        }
+
+      }
+    }
+
+  }
+
 }
 
 .oftenillegal .raresummary_box .rare_name:after {
@@ -367,7 +431,7 @@ nav {
 .suppressed .raresummary_box:after {
   content: "currently suppressed due to political situation";
 
-  font-size: 16px;
+  font-size: 15px;
   text-align: center;
   width: 150px;
   color: @text-3;
@@ -385,6 +449,8 @@ nav {
 
 
 #route {
+
+  font-family: @font-2;
 
   .small_info {
     color: @text-5;
@@ -408,15 +474,18 @@ nav {
 
       .distance {
         position: relative;
-        width: 94px;
+        width: 74px;
 
         float: left;
+
+        font-size: 15px;
+        font-weight: bold;
 
         .arrow {
 
           font-size: 30px;
           position: absolute;
-          top: -15px;
+          top: -13px;
           right: -20px;
 
         }
@@ -424,6 +493,8 @@ nav {
       }
 
       .system {
+        font-family: @font-1;
+
         float: left;
 
         padding-left: 25px;
@@ -431,20 +502,6 @@ nav {
         font-weight: bold;
       }
 
-      .station {
-        float: left;
-        font-size: 11px;
-      }
-      .lsdistance {
-        float: right;
-        font-size: 11px;
-      }
-    }
-
-    .rare {
-      font-weight: bold;
-      margin-top: 25px;
-      color: @text-4;
     }
 
     position: relative;
@@ -530,10 +587,12 @@ nav {
 /* --- */
 
 header {
+  font-family: @font-2;
 
   h1 {
-    font-size: 30px;
-    margin: 0 5px;
+    font-family: @font-1;
+    font-size: 20px;
+    margin: 2px 5px;
     padding: 0;
     float: left;
   }
@@ -541,7 +600,7 @@ header {
   .by {
     float: left;
     color: @text-5;
-    margin: 5px;
+    margin: 8px;
   }
 
   .about {
@@ -553,8 +612,8 @@ header {
       span {
         float: right;
         text-align: right;
-        font-size: 11px;
-        padding-top: 7px;
+        font-size: 14px;
+        padding-top: 8px;
 
         color: @text-5;
       }
@@ -851,3 +910,52 @@ input[type=checkbox] {
 }
 
 /* -- */
+
+#loadsave {
+
+  font-family: @font-2;
+
+  .ui-widget {
+    font-family: @font-2;
+  }
+
+  .section {
+    border: 1px solid @box-border-2;
+    border-radius: 1px;
+    padding: 20px 5px;
+    background: @box-bg-2;
+
+    margin-bottom: 10px;
+
+    p {
+      margin: 0;
+      padding: 0 0 5px 5px;
+      color: @text-5;
+    }
+
+    .textbox {
+      overflow: hidden;
+      padding-right: 5px;
+    }
+
+    input[type=text] {
+
+      display: inline-block;
+      width: 100%;
+
+      border: 1px solid #7c7c7c;
+      background: #333;
+      color: #fff;
+
+      padding: 5px 5px 5px 13px;
+
+      border-radius: 2px;
+    }
+
+    button {
+      float: right;
+    }
+
+
+  }
+}

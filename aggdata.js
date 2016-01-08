@@ -10,9 +10,9 @@ var Q = require('q');
 var d = function(vari) { console.log(require('util').inspect(vari, {colors: true, depth: 7})); };
 var dd = function(vari) { console.log(require('util').inspect(vari, {colors: true, depth: 7})); process.exit(); };
 
-downloadData(function() {
+//downloadData(function() {
     aggregate(convertForumData());
-});
+//});
 
 
 // ----
@@ -91,15 +91,18 @@ function aggregate(rares) {
             name: rare.item,
             category: rare.category,
             price: parseInt(rare.price),
-            max_cap: rare.max_cap,
-            suppressed: (rare.suppressed === "t"),
+            max_cap: parseInt(rare.max_cap),
+            suppressed: (rare.suppressed === "1"),
             sc_est_mins: parseInt(rare.sc_est_mins),
-            often_illegal: (rare.often_illegal === "t"),
+            often_illegal: (rare.often_illegal === "1"),
             est_sell150: parseFloat(rare.est_sell150),
             est_unit_profit150: parseFloat(rare.est_unit_profit150),
             est_total_profit150: parseFloat(rare.est_total_profit150),
+            supply_rate_min: parseInt(rare.supply_rate_min),
+            supply_rate_max: parseInt(rare.supply_rate_max),
             station: stationdata
         });
+
 
     });
 
@@ -118,7 +121,6 @@ function aggregate(rares) {
                 var m = s.name.match(/\s/g);
 
                 if(!m || s.allegiance !== null || m.length <= 1 ) {
-
 
                     others.push({
                         name: s.name,

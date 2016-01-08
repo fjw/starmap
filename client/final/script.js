@@ -67953,7 +67953,7 @@ if ( typeof module === 'object' ) {
             initObjects();
             //initOtherStars();
             initEvents();
-            initRoute();
+            initLocalLoading();
 
 
             // Cam-Pos initial
@@ -68360,6 +68360,14 @@ if ( typeof module === 'object' ) {
             "input[name='sdistance_option']").on("click", function() {
 
             updateFilters();
+
+        });
+
+        // --
+
+        $("#saveroute").button().on("click", function() {
+
+
 
         });
 
@@ -69146,6 +69154,72 @@ if ( typeof module === 'object' ) {
 
     }
 
+    var percentagecolorspectrum = [
+        { val: 0, col: "#e00" },
+        { val: 1, col: "#0e0" }
+    ];
+
+    function colorByMinSupply() {
+
+        _.each(starobjs, function(so, i) {
+
+            var r = so.data.rares[0];
+
+            if(r.supply_rate_min !== null) {
+
+                var p = r.supply_rate_min / r.max_cap;
+
+                so.starMesh.material.color.setHex(RGBtoInt(colorBetween(percentagecolorspectrum, p)));
+
+            } else {
+
+                so.starMesh.material.color.setHex(0x333333);
+
+            }
+        });
+
+    }
+
+    function colorByAvgSupply() {
+
+        _.each(starobjs, function(so, i) {
+
+            var r = so.data.rares[0];
+
+            if(r.supply_rate_min !== null) {
+
+                var p = ((r.supply_rate_max + r.supply_rate_min) / 2) / r.max_cap;
+
+                so.starMesh.material.color.setHex(RGBtoInt(colorBetween(percentagecolorspectrum, p)));
+
+            } else {
+
+                so.starMesh.material.color.setHex(0x333333);
+
+            }
+        });
+
+    }
+
+    //precalc max and min
+    var maxunitprice = _.max(stardata, function(s) { return s.rares[0].price; }).rares[0].price;
+    var minunitprice = _.min(stardata, function(s) { return s.rares[0].price; }).rares[0].price;
+
+    function colorByUnitPrice() {
+
+        _.each(starobjs, function(so, i) {
+
+            var up = [
+                { val: minunitprice, col: "#444" },
+                { val: (maxunitprice-minunitprice) / 3 + minunitprice, col: "#00a" },
+                { val: maxunitprice, col: "#f0f" }
+            ];
+
+            so.starMesh.material.color.setHex(RGBtoInt(colorBetween(up, so.data.rares[0].price)));
+
+        });
+
+    }
 
     function colorBetween(p, val) {
         var u, o;
@@ -69193,6 +69267,12 @@ if ( typeof module === 'object' ) {
             colorByStationDistance();
         } else if( v == "rare" ) {
             colorByRareDistance();
+        } else if( v == "minsupply") {
+            colorByMinSupply();
+        } else if( v == "avgsupply") {
+            colorByAvgSupply();
+        }else if( v == "unitprice") {
+            colorByUnitPrice();
         }
 
         if(selectedMesh) {
@@ -69315,9 +69395,10 @@ if ( typeof module === 'object' ) {
             var item = $("#cloneables").find(".routeitem").clone();
 
             $(".system", item).html(system.name);
-            $(".rare", item).html(rare.name);
-            $(".station", item).html(rare.station.name);
-            $(".lsdistance", item).html(rare.station.distance_to_star + " Ls");
+            $(".rare_name", item).html(rare.name);
+            $(".unitprice", item).html(rare.price);
+            $(".station_name", item).html(rare.station.name);
+            $(".station_distance", item).html(rare.station.distance_to_star);
 
 
             if(lastpos === null) {
@@ -69368,6 +69449,7 @@ if ( typeof module === 'object' ) {
                 updateRouteList();
 
             });
+
         });
 
 
@@ -69392,7 +69474,9 @@ if ( typeof module === 'object' ) {
     }
 
 
-    function initRoute() {
+
+
+    function initLocalLoading() {
 
         // Load from route
         if(typeof localStorage.route != "undefined" && localStorage.route != "") {
