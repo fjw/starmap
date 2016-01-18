@@ -480,11 +480,18 @@
 
         // --
 
-        $("#saveroute").button().on("click", function() {
-
-
-
+        $("#saveroute").button({disabled: true}).on("click", function() {
+            saveRouteStorage();
         });
+
+
+        $("#savename").on("keydown", function(e) {
+            setTimeout(function() {
+                $("#saveroute").button("option", "disabled", !(route.length >= 1 && $("#savename").val() !== "" ));
+            },1);
+        });
+
+
 
     }
 
@@ -1466,6 +1473,7 @@
     }
 
 
+    var routestorage = [];
     var route = [];
     var routelines;
     var sortableRoutelist;
@@ -1584,20 +1592,64 @@
 
         /* -- */
         // Save to localstorage
-        localStorage.route = route.join(",");
+        localStorage.route = JSON.stringify(route);
+
+        /* -- */
+
+        $("#saveroute").button("option", "disabled", !(route.length >= 1 && $("#savename").val() !== "" ));
+
 
     }
 
 
+    function saveRouteStorage() {
+        routestorage.push({name: $("#savename").val(), route: route });
+        localStorage.routestorage = JSON.stringify(routestorage);
+
+        $("#savename").val("");
+        $("#saveroute").button("option", "disabled", true);
+
+
+        updateRouteStorage();
+    }
+
+
+    function updateRouteStorage() {
+
+        var rl = $(".routelist");
+        var cloneable = $("#cloneables .routelistitem");
+
+        rl.empty();
+
+
+        _.each(routestorage, function(rsi) {
+
+            var rli = cloneable.clone();
+
+            $(".name", rli).html(rsi.name);
+
+            rl.append(rli);
+
+        });
+
+
+    }
 
 
     function initLocalLoading() {
 
         // Load from route
         if(typeof localStorage.route != "undefined" && localStorage.route != "") {
-            route = localStorage.route.split(",");
+            route = JSON.parse(localStorage.route);
             updateRouteList();
         }
+
+
+        if(typeof localStorage.routestorage != "undefined" && localStorage.routestorage != "") {
+            routestorage = JSON.parse(localStorage.routestorage);
+            updateRouteStorage();
+        }
+
 
     }
 

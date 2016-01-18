@@ -149,7 +149,7 @@
 
                 <button id="saveroute">Save</button>
                 <div class="textbox">
-                    <input type="text" id="save" placeholder="Name">
+                    <input type="text" id="savename" placeholder="Name">
                 </div>
             </div>
 
@@ -314,8 +314,9 @@
         </ul>
 
 
-        <div class="routelist item">
-
+        <div class="routelistitem">
+            <div class="name"></div>
+            <div class="details"></div>
         </div>
 
 
