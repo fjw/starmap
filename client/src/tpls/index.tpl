@@ -136,6 +136,7 @@
         <!-- ------------------------------------------------- -->
 
         <div id="route" class="nn">
+            <h2>(unsaved)</h2>
             <ul></ul>
             <div class="small_info">drag to change order</div>
         </div>

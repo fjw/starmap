@@ -69483,8 +69483,14 @@ if ( typeof module === 'object' ) {
 
         $("#saveroute").button("option", "disabled", !(route.length >= 1 && $("#savename").val() !== "" ));
 
-
+        var actRouteIndex = getActRouteIndex();
+        if(typeof(actRouteIndex) == "undefined") {
+            $("#route h2").html("(unsaved)");
+        } else {
+            $("#route h2").html(routestorage[actRouteIndex].name);
+        }
     }
+
 
 
     function saveRouteStorage() {
@@ -69493,7 +69499,6 @@ if ( typeof module === 'object' ) {
 
         $("#savename").val("");
         $("#saveroute").button("option", "disabled", true);
-
 
         updateRouteStorage();
     }
@@ -69517,6 +69522,32 @@ if ( typeof module === 'object' ) {
 
         });
 
+        updateRouteSelection();
+    }
+
+
+    function updateRouteSelection() {
+
+        var items = $(".routelist .routelistitem");
+
+        items.removeClass("active");
+
+        var actRouteIndex = getActRouteIndex();
+        if(typeof(actRouteIndex) != "undefined") {
+            $(items[actRouteIndex]).addClass("active");
+        }
+
+    }
+
+    function getActRouteIndex() {
+
+        return _.find(routestorage, function(r) {
+
+            return _.all(r.route, function(rr, i) {
+                return rr == route[i];
+            });
+
+        });
 
     }
 

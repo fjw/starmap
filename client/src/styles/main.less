@@ -84,6 +84,11 @@ body {
   display: none;
 }
 
+h2 {
+  margin: 0 0 5px 0;
+  font-family: @font-1;
+}
+
 /* ------------------------------- */
 
 main, header, footer, #maparea {
@@ -534,9 +539,7 @@ nav {
 
     margin-bottom: 10px;
 
-    h2 {
-      margin: 0 0 5px 0;
-    }
+
 
     .inner {
       -webkit-column-count: 2;
@@ -919,10 +922,14 @@ input[type=checkbox] {
     font-family: @font-2;
   }
 
+  .section:first-child {
+    padding: 20px 5px;
+  }
+
   .section {
     border: 1px solid @box-border-2;
     border-radius: 1px;
-    padding: 20px 5px;
+    padding: 10px 5px;
     background: @box-bg-2;
 
     margin-bottom: 10px;
