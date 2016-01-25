@@ -487,7 +487,8 @@
 
         $("#savename").on("keydown", function(e) {
             setTimeout(function() {
-                $("#saveroute").button("option", "disabled", !(route.length >= 1 && $("#savename").val() !== "" ));
+                console.log(getActRouteIndex());
+                $("#saveroute").button("option", "disabled", !(route.length >= 1 && $("#savename").val() !== "" && getActRouteIndex() == -1 ));
             },1);
         });
 
@@ -1596,10 +1597,11 @@
 
         /* -- */
 
-        $("#saveroute").button("option", "disabled", !(route.length >= 1 && $("#savename").val() !== "" ));
+        $("#saveroute").button("option", "disabled", !(route.length >= 1 && $("#savename").val() !== "" && getActRouteIndex() == -1 ));
 
         var actRouteIndex = getActRouteIndex();
-        if(typeof(actRouteIndex) == "undefined") {
+
+        if(typeof(actRouteIndex) == "undefined" || actRouteIndex == -1) {
             $("#route h2").html("(unsaved)");
         } else {
             $("#route h2").html(routestorage[actRouteIndex].name);
@@ -1627,13 +1629,45 @@
         rl.empty();
 
 
-        _.each(routestorage, function(rsi) {
+        _.each(routestorage, function(rsi, t) {
 
             var rli = cloneable.clone();
 
             $(".name", rli).html(rsi.name);
 
+            var rarenames = [];
+            _.each(rsi.route, function(ri) {
+                var system = stardata[parseInt(ri.split("-")[0])];
+                var rare = system.rares[parseInt(ri.split("-")[1])];
+
+                rarenames.push(rare.name.replace(/\s/g, "&nbsp;"));
+            });
+
+
+            $(".details", rli).html(rarenames.join(" &raquo; "));
+
+
             rl.append(rli);
+
+            rli.on("click", function() {
+
+                route = rsi.route;
+
+                updateRouteSelection();
+                updateRouteList();
+
+            });
+
+            $(".delroutelistitem", rli).button().on("click", function() {
+
+                routestorage.splice(t, 1);
+                localStorage.routestorage = JSON.stringify(routestorage);
+
+                updateRouteStorage();
+                updateRouteSelection();
+                updateRouteList();
+
+            });
 
         });
 
@@ -1648,21 +1682,27 @@
         items.removeClass("active");
 
         var actRouteIndex = getActRouteIndex();
-        if(typeof(actRouteIndex) != "undefined") {
+
+        if(typeof(actRouteIndex) != "undefined" && actRouteIndex != -1) {
             $(items[actRouteIndex]).addClass("active");
         }
 
+
+        //todo: updateRouteSelection muss bei jeder ROutenänderung ausgeführt werden
     }
 
     function getActRouteIndex() {
 
-        return _.find(routestorage, function(r) {
+        return _.findIndex(routestorage, function(r) {
 
             return _.all(r.route, function(rr, i) {
                 return rr == route[i];
             });
 
         });
+
+
+        //todo: Bug, wenn route beginnt mit dannFEHLER
 
     }
 

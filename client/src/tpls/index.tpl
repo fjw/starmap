@@ -318,6 +318,8 @@
         <div class="routelistitem">
             <div class="name"></div>
             <div class="details"></div>
+
+            <button class="delroutelistitem">&times;</button>
         </div>
 
 

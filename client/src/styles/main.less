@@ -963,6 +963,63 @@ input[type=checkbox] {
       float: right;
     }
 
+    .routelist {
+
+      padding: 5px;
+
+      .routelistitem {
+        padding: 10px 5px;
+        cursor: pointer;
+
+        &:hover {
+          outline: 1px solid @text-2;
+        }
+
+        .name {
+          font-size: 16px;
+        }
+
+        .details {
+          color: @text-5;
+        }
+
+        &.active {
+
+          cursor: default;
+
+          outline: 1px solid @text-4;
+          .name {
+            color: @text-4;
+          }
+          .details {
+            color: @text-1;
+          }
+
+          .delroutelistitem {
+            position: absolute;
+
+            top: 5px;
+            right: 5px;
+
+            & > span {
+              padding: 0 5px;
+            }
+
+            display: block;
+          }
+        }
+
+        position: relative;
+
+        .delroutelistitem {
+          display: none;
+        }
+
+
+      }
+
+    }
+
 
   }
 }
