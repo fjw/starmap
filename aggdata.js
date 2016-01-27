@@ -10,18 +10,23 @@ var Q = require('q');
 var d = function(vari) { console.log(require('util').inspect(vari, {colors: true, depth: 7})); };
 var dd = function(vari) { console.log(require('util').inspect(vari, {colors: true, depth: 7})); process.exit(); };
 
-//downloadData(function() {
+downloadData(function() {
+    console.log("/");
     aggregate(convertForumData());
-//});
+});
 
 
 // ----
 
 function convertForumData() {
 
-    var lines = fs.readFileSync(__dirname + "/data/raresfromforum.csv").toString().split("\n");
+    var lines = fs.readFileSync(__dirname + "/data/rares.csv").toString().split("\n");
 
     var keys = lines[0].split(",");
+
+    for(var k = 0; k < keys.length; k++) {
+        keys[k] = keys[k].trim();
+    }
 
     var list = [];
     _.each(lines, function(line, i) {
@@ -35,7 +40,7 @@ function convertForumData() {
                 var obj = {};
                 _.each(keys, function (key, col) {
 
-                    obj[key] = line[col].replace(/"/g, "");
+                    obj[key] = line[col].replace(/"/g, "").trim();
 
                 });
                 list.push(obj);
@@ -57,6 +62,7 @@ function aggregate(rares) {
     var fulldata = [];
 
     _.each(rares, function(rare) {
+        console.log(".");
 
         var systemdata = _.find(systems, function (system) {
             return system.name == rare.system;
@@ -88,6 +94,7 @@ function aggregate(rares) {
         }
 
         system.rares.push({
+            uid: rare.uid,
             name: rare.item,
             category: rare.category,
             price: parseInt(rare.price),
@@ -194,6 +201,7 @@ function downloadData(callback) {
 
     ]).then(callback);
 
+
 }
 
 // ----
@@ -207,6 +215,7 @@ function getDataFile(url, filename) {
 
         file.on('finish', function() {
             file.close(function() {
+                console.log(".");
                 deferred.resolve({});
             });
         });

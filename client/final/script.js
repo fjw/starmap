@@ -69365,6 +69365,7 @@ if ( typeof module === 'object' ) {
     var sortableRoutelist;
     function addToRoute(rareid) {
         route.push(rareid);
+        updateRouteSelection();
         updateRouteList();
         selectTab("route");
     }
@@ -69456,6 +69457,7 @@ if ( typeof module === 'object' ) {
 
                 route.splice(t, 1);
                 updateRouteList();
+                updateRouteSelection();
 
             });
 
@@ -69572,20 +69574,23 @@ if ( typeof module === 'object' ) {
             $(items[actRouteIndex]).addClass("active");
         }
 
+        if(typeof(actRouteIndex) == "undefined" || actRouteIndex == -1) {
+            $("#route h2").html("(unsaved)");
+        } else {
+            $("#route h2").html(routestorage[actRouteIndex].name);
+        }
+
     }
 
     function getActRouteIndex() {
 
+        var rr = route.join("#");
+
         return _.findIndex(routestorage, function(r) {
 
-            return _.all(r.route, function(rr, i) {
-                return rr == route[i];
-            });
+            return r.route.join("#") === rr;
 
         });
-
-
-        //todo: Bug, wenn route beginnt mit dannFEHLER
 
     }
 

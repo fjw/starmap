@@ -146,12 +146,17 @@
         <div id="loadsave" class="">
 
             <div class="section">
-                <p>Save actual route:</p>
+                <p>Save current route:</p>
 
                 <button id="saveroute">Save</button>
                 <div class="textbox">
                     <input type="text" id="savename" placeholder="Name">
                 </div>
+            </div>
+
+            <div class="section">
+                <p>Share link for current route:</p>
+                <input id="shareroute" value="">
             </div>
 
             <div class="section">
