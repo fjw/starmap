@@ -69421,7 +69421,6 @@ if ( typeof module === 'object' ) {
         var list = $("#route").find("ul");
         list.empty();
 
-
         //remove old routelines
         if(routelines) {
             scene.remove(routelines);
@@ -69494,6 +69493,7 @@ if ( typeof module === 'object' ) {
             $(".delrouteitem", item).button().on("click", function() {
 
                 route.splice(t, 1);
+                localStorage.route = JSON.stringify(route);
                 updateRouteList();
                 updateRouteSelection();
 
@@ -69541,14 +69541,22 @@ if ( typeof module === 'object' ) {
 
     function updateShareTextbox() {
 
-        var param = "http://" + document.location.host + "?r=" + route.join("_");
+        if(route.length === 0) {
 
-        var actRouteIndex = getActRouteIndex();
-        if(typeof(actRouteIndex) != "undefined" && actRouteIndex != -1) {
-            param += "&n="+ encodeURIComponent(routestorage[actRouteIndex].name);
+            $("#shareroute").val("");
+
+        } else {
+
+            var param = "http://" + document.location.host + "?r=" + route.join("_");
+
+            var actRouteIndex = getActRouteIndex();
+            if(typeof(actRouteIndex) != "undefined" && actRouteIndex != -1) {
+                param += "&n="+ encodeURIComponent(routestorage[actRouteIndex].name);
+            }
+
+            $("#shareroute").val(param);
+
         }
-
-        $("#shareroute").val(param);
 
     }
 
@@ -69571,6 +69579,10 @@ if ( typeof module === 'object' ) {
         var cloneable = $("#cloneables .routelistitem");
 
         rl.empty();
+
+        if(routestorage.length === 0) {
+            rl.html("no saved routes");
+        }
 
 
         _.each(routestorage, function(rsi, t) {
@@ -69692,6 +69704,8 @@ if ( typeof module === 'object' ) {
                 updateRouteList();
 
             }
+
+            //todo: nice camera location
 
         }
 
