@@ -246,7 +246,7 @@ function buildMarkup() {
                 thisrare = thisrare.replace("{{government}}", rare.station.government);
                 thisrare = thisrare.replace("{{economies}}", rare.station.economies.join(", "));
 
-                thisrare = thisrare.replace("{{rareid}}", i + "-" + r);
+                thisrare = thisrare.replace("{{rareid}}", rare.uid);
 
                 if(rare.station.distance_to_star >= 1000) {
                     thisrare = thisrare.replace("{{far1_start}}", "");

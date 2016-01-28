@@ -487,11 +487,19 @@
 
         $("#savename").on("keydown", function(e) {
             setTimeout(function() {
-                console.log(getActRouteIndex());
                 $("#saveroute").button("option", "disabled", !(route.length >= 1 && $("#savename").val() !== "" && getActRouteIndex() == -1 ));
             },1);
         });
 
+        // --
+
+        var shareroutetextbox = $("#shareroute");
+        shareroutetextbox.on("click", function() {
+
+            this.select();
+
+        });
+        shareroutetextbox.val("");
 
 
     }
@@ -1486,6 +1494,33 @@
     }
 
 
+    var raresbyid = null;
+    function getRareById(uid) {
+
+        if(raresbyid === null) {
+            raresbyid = {};
+
+            _.each(stardata, function(s, systemindex) {
+
+                var system = _.clone(s);
+                delete system.rares;
+
+                _.each(s.rares, function(r) {
+
+                    r.system = system;
+                    r.systemindex = systemindex;
+                    raresbyid[r.uid] = r;
+
+                });
+
+            });
+
+        }
+
+        return raresbyid[uid];
+    }
+
+
     function updateRouteList() {
 
         var rc = $(".route_count");
@@ -1510,12 +1545,11 @@
         routelines = new THREE.Object3D();
 
         var lastpos = null;
-        _.each(route, function(rareid, t) {
+        _.each(route, function(uid, t) {
 
-            var si = parseInt(rareid.split("-")[0]);
+            var rare = getRareById(uid);
 
-            var system = stardata[si];
-            var rare = system.rares[parseInt(rareid.split("-")[1])];
+            var system = rare.system;
 
             var item = $("#cloneables").find(".routeitem").clone();
 
@@ -1527,15 +1561,19 @@
 
 
             if(lastpos === null) {
-                lastpos = parseInt(route[route.length-1].split("-")[0]);
+                lastpos = getRareById(route[route.length-1]).systemindex;
+
+                if(typeof(lastpos) == "undefined") {
+                    lastpos = rare.systemindex;
+                }
             }
 
-            var d = calcDistance(lastpos, si);
+            var d = calcDistance(lastpos, rare.systemindex);
             var col = colorBetween(rarecolorspectrum, d);
 
             $(".distancevalue", item).html(d);
             $(".arrow", item).css("color", col);
-            item.attr("data-rareid", rareid);
+            item.attr("data-rareid", uid);
 
 
             list.append(item);
@@ -1564,7 +1602,7 @@
 
             // --
 
-            lastpos = si;
+            lastpos = rare.systemindex;
 
             // --
 
@@ -1608,18 +1646,37 @@
         } else {
             $("#route h2").html(routestorage[actRouteIndex].name);
         }
+
+
+        /* -- */
+
+        updateShareTextbox();
     }
 
 
+    function updateShareTextbox() {
+
+        var param = "http://" + document.location.host + "?r=" + route.join("_");
+
+        var actRouteIndex = getActRouteIndex();
+        if(typeof(actRouteIndex) != "undefined" && actRouteIndex != -1) {
+            param += "&n="+ encodeURIComponent(routestorage[actRouteIndex].name);
+        }
+
+        $("#shareroute").val(param);
+
+    }
+
 
     function saveRouteStorage() {
-        routestorage.push({name: $("#savename").val(), route: route });
+        routestorage.push({name: $("#savename").val(), route: _.clone(route) });
         localStorage.routestorage = JSON.stringify(routestorage);
 
         $("#savename").val("");
         $("#saveroute").button("option", "disabled", true);
 
         updateRouteStorage();
+        updateShareTextbox();
     }
 
 
@@ -1638,10 +1695,9 @@
             $(".name", rli).html(rsi.name);
 
             var rarenames = [];
-            _.each(rsi.route, function(ri) {
-                var system = stardata[parseInt(ri.split("-")[0])];
-                var rare = system.rares[parseInt(ri.split("-")[1])];
+            _.each(rsi.route, function(uid) {
 
+                var rare = getRareById(uid);
                 rarenames.push(rare.name.replace(/\s/g, "&nbsp;"));
             });
 
@@ -1653,7 +1709,7 @@
 
             rli.on("click", function() {
 
-                route = rsi.route;
+                route = _.clone(rsi.route);
 
                 updateRouteSelection();
                 updateRouteList();
@@ -1700,7 +1756,6 @@
     function getActRouteIndex() {
 
         var rr = route.join("#");
-
         return _.findIndex(routestorage, function(r) {
 
             return r.route.join("#") === rr;
@@ -1708,7 +1763,6 @@
         });
 
     }
-
 
     function initLocalLoading() {
 
@@ -1724,6 +1778,39 @@
             updateRouteStorage();
         }
 
+        updateShareTextbox();
+
+        /* --- */
+
+        // parameters override
+        var ppairs = document.location.search.replace("?","").split("&");
+        var p = {};
+        _.each(ppairs, function(ppp) {
+            p[ppp.split("=")[0]] = ppp.split("=")[1];
+        });
+
+        if(p.r) {
+
+            if(!p.n) {
+                p.n = "noname";
+            }
+
+            var oldname = _.find(routestorage, function (on) {
+                return on.name == p.n;
+            });
+
+            if(!oldname || p.r != oldname.route.join("_")) {
+
+                route = p.r.split("_");
+                $("#savename").val(p.n);
+                saveRouteStorage();
+                updateRouteList();
+
+            }
+
+            //todo: nice camera location
+
+        }
 
     }
 

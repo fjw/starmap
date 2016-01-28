@@ -147,7 +147,6 @@
 
             <div class="section">
                 <p>Save current route:</p>
-
                 <button id="saveroute">Save</button>
                 <div class="textbox">
                     <input type="text" id="savename" placeholder="Name">
@@ -156,7 +155,7 @@
 
             <div class="section">
                 <p>Share link for current route:</p>
-                <input id="shareroute" value="">
+                <input type="text" id="shareroute">
             </div>
 
             <div class="section">
